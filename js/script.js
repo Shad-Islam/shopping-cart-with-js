@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
       products.forEach((product) => {
         const productItem = document.createElement("div");
         productItem.classList.add("product-item");
+        productItem.setAttribute("data-id", product.id);
 
         productItem.innerHTML = `
               <div class="product-img">
@@ -31,3 +32,34 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch((error) => console.error("Error fetching products:", error));
 });
+
+addEventListener("click", (event) => {
+  let positionClick = event.target;
+  if (positionClick.classList.contains("add-to-cart")) {
+    let productId =
+      positionClick.parentElement.parentElement.getAttribute("data-id");
+     addToCart(productId);
+  }
+});
+
+let carts = [];
+
+const addToCart = (productId) => {
+  let cartItem = carts.find((item) => item.product_Id === productId);
+  if (carts.length <= 0) {
+    carts = [
+      {
+        product_Id: productId,
+        quantity: 1,
+      },
+    ];
+  }else if (cartItem) {
+    cartItem.quantity++;
+  } else {
+    carts.push({
+      product_Id: productId,
+      quantity: 1,
+    });
+  }
+  console.log(carts);
+};
