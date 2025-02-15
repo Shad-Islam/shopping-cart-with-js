@@ -1,0 +1,50 @@
+[
+    {
+      "name": "Product 1",
+      "price": 100,
+      "description": "This is the description for Product 1.",
+      "image": "./images/img1.jpeg"
+    },
+    {
+      "name": "Product 2",
+      "price": 200,
+      "description": "This is the description for Product 2.",
+      "image": "./images/img2.jpg"
+    },
+    {
+      "name": "Product 3",
+      "price": 300,
+      "description": "This is the description for Product 3.",
+      "image": "./images/img3.png"
+    },
+    {
+      "name": "Product 4",
+      "price": 400,
+      "description": "This is the description for Product 4.",
+      "image": "./images/img4.webp"
+    },
+    {
+      "name": "Product 5",
+      "price": 500,
+      "description": "This is the description for Product 5.",
+      "image": "./images/img5.jpg"
+    },
+    {
+      "name": "Product 6",
+      "price": 600,
+      "description": "This is the description for Product 6.",
+      "image": "./images/img6.jpg"
+    },
+    {
+      "name": "Product 7",
+      "price": 700,
+      "description": "This is the description for Product 7.",
+      "image": "./images/img7.jpg"
+    },
+    {
+      "name": "Product 8",
+      "price": 800,
+      "description": "This is the description for Product 8.",
+      "image": "./images/img8.jpg"
+    }
+  ]

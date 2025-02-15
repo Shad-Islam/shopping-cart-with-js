@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  fetch("./data/product.json")
-    .then((response) => response.json())
+  fetch("./data/products.json")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+      return response.json();
+    })
     .then((products) => {
       const container = document.querySelector(".container");
       container.innerHTML = "";
@@ -10,15 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
         productItem.classList.add("product-item");
 
         productItem.innerHTML = `
-            <div class="product-img">
-              <img src="${product.image}" alt="${product.name}" />
-            </div>
-            <div class="product-content">
-              <h3 class="product-title">${product.name}</h3>
-              <p class="product-price">Price: $${product.price}</p>
-              <button class="add-to-cart">Add to cart</button>
-            </div>
-          `;
+              <div class="product-img">
+                <img src="${product.image}" alt="${product.name}" />
+              </div>
+              <div class="product-content">
+                <h3 class="product-title">${product.name}</h3>
+                <p class="product-price">Price: $${product.price}</p>
+                <p class="product-description">${product.description}</p>
+                <button class="add-to-cart">Add to cart</button>
+              </div>
+            `;
 
         container.appendChild(productItem);
       });
