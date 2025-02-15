@@ -1,3 +1,5 @@
+let products = [];
+
 document.addEventListener("DOMContentLoaded", () => {
   fetch("./data/products.json")
     .then((response) => {
@@ -6,7 +8,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       return response.json();
     })
-    .then((products) => {
+    .then((data) => {
+      products = data; // Store the products data in the global variable
+      localStorage.setItem("products", JSON.stringify(products)); // Store products in localStorage
       const container = document.querySelector(".container");
       container.innerHTML = "";
 
@@ -38,11 +42,11 @@ addEventListener("click", (event) => {
   if (positionClick.classList.contains("add-to-cart")) {
     let productId =
       positionClick.parentElement.parentElement.getAttribute("data-id");
-     addToCart(productId);
+    addToCart(productId);
   }
 });
 
-let carts = [];
+let carts = JSON.parse(localStorage.getItem("carts")) || [];
 
 const addToCart = (productId) => {
   let cartItem = carts.find((item) => item.product_Id === productId);
@@ -53,7 +57,7 @@ const addToCart = (productId) => {
         quantity: 1,
       },
     ];
-  }else if (cartItem) {
+  } else if (cartItem) {
     cartItem.quantity++;
   } else {
     carts.push({
@@ -61,5 +65,37 @@ const addToCart = (productId) => {
       quantity: 1,
     });
   }
+
+  localStorage.setItem("carts", JSON.stringify(carts)); // Store carts in localStorage
   console.log(carts);
+  addToCartHtml();
+};
+
+let addToCartHtml = () => {
+  const cartContainer = document.querySelector(".cart-container");
+  cartContainer.innerHTML = "";
+
+  if (carts.length > 0) {
+    carts.forEach((cartItem) => {
+      const cartItemElement = document.createElement("div");
+      cartItemElement.classList.add("cart-item");
+      const product = products.find(
+        (product) => product.id == cartItem.product_Id
+      );
+      cartItemElement.innerHTML = `
+        <img src="${product.image}" alt="${product.name}" />
+        <div class="cart-item-info">
+          <h4>${product.name}</h4>
+          <h5>Price: $${product.price}</h5>
+          <span class="remove-item" data-id="${cartItem.product_Id}">Remove</span>
+        </div>
+        <div class="cart-item-amount">
+          <i class="fa-solid fa-chevron-up" data-id="${cartItem.product_Id}"></i>
+          <p class="item-amount">${cartItem.quantity}</p>
+          <i class="fa-solid fa-chevron-down" data-id="${cartItem.product_Id}"></i>
+        </div>
+      `;
+      cartContainer.appendChild(cartItemElement);
+    });
+  }
 };
