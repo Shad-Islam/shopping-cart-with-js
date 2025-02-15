@@ -8,10 +8,11 @@
     gap: 20px;
     width: 80%;
     margin: auto;
+    height: 100%;
     padding: 20px;
-    height: 800px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
     background-color: #f1f1f1;
 }
 
