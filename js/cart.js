@@ -12,6 +12,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+
+// Add event listener for clear all button
+document.querySelector(".clear-all-btn").addEventListener("click", () => {
+    localStorage.removeItem("carts");
+    renderCartItems();
+});
+
 const updateCartItemQuantity = (productId, newQuantity) => {
   let carts = JSON.parse(localStorage.getItem("carts")) || [];
   const cartItem = carts.find((item) => item.product_Id === productId);
