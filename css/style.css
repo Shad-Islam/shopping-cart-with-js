@@ -34,7 +34,7 @@
     background: #2980b9;
 }
 
-.cart-item-num{
+.cart-item-num {
     position: absolute;
     top: -10px;
     right: -10px;
@@ -43,7 +43,10 @@
     padding: 5px 10px;
     border-radius: 50%;
     font-size: 14px;
-    display: none
+}
+
+.cart-item-num.hidden {
+    display: none;
 }
 /* navbar css end */
 

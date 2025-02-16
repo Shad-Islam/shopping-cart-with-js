@@ -67,11 +67,24 @@ const addToCart = (productId) => {
   }
 
   localStorage.setItem("carts", JSON.stringify(carts)); // Store carts in localStorage
+  updateCartItemNum();
   console.log(carts);
   addToCartHtml();
 };
 
-let addToCartHtml = () => {
+const updateCartItemNum = () => {
+  const cartItemNum = document.querySelector(".cart-item-num");
+  const totalQuantity = carts.reduce((total, item) => total + item.quantity, 0);
+  cartItemNum.textContent = totalQuantity;
+
+  if (totalQuantity > 0) {
+    cartItemNum.classList.remove("hidden");
+  } else {
+    cartItemNum.classList.add("hidden");
+  }
+};
+
+const addToCartHtml = () => {
   const cartContainer = document.querySelector(".cart-container");
   cartContainer.innerHTML = "";
 
