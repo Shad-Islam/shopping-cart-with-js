@@ -12,11 +12,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-
 // Add event listener for clear all button
 document.querySelector(".clear-all-btn").addEventListener("click", () => {
-    localStorage.removeItem("carts");
-    renderCartItems();
+  localStorage.removeItem("carts");
+  renderCartItems();
 });
 
 const updateCartItemQuantity = (productId, newQuantity) => {
@@ -101,4 +100,39 @@ const renderCartItems = () => {
   }
 
   document.querySelector(".subtotal-amount").textContent = subtotal.toFixed(2);
+};
+
+document.querySelector(".apply-promo-btn").addEventListener("click", () => {
+  applyPromoCode();
+});
+
+const applyPromoCode = () => {
+  const promoCode = document.getElementById("promo-code").value.trim();
+  console.log(promoCode);
+
+  if (promoCode === "ostad10") {
+    const subtotal = parseFloat(
+      document.querySelector(".subtotal-amount").textContent
+    );
+    const discount = subtotal * 0.1;
+    const newTotal = subtotal - discount;
+    document.querySelector(".discount-amount").textContent =
+      discount.toFixed(2);
+    document.querySelector(".total-amount").textContent = newTotal.toFixed(2);
+  }
+  else if(promoCode === "ostad5"){
+    const subtotal = parseFloat(
+      document.querySelector(".subtotal-amount").textContent
+    );
+    const discount = subtotal * 0.05;
+    const newTotal = subtotal - discount;
+    document.querySelector(".discount-amount").textContent =
+      discount.toFixed(2);
+    document.querySelector(".total-amount").textContent = newTotal.toFixed(20);
+    document.querySelector(".total-amount").textContent = newTotal.toFixed(2);
+
+  }
+  else {
+    alert("Invalid promo code.");
+  }
 };
