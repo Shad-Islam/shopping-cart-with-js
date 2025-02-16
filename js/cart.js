@@ -10,12 +10,16 @@ document.addEventListener("DOMContentLoaded", () => {
         removeFromCart(productId);
       }
     });
-});
 
-// Add event listener for clear all button
-document.querySelector(".clear-all-btn").addEventListener("click", () => {
-  localStorage.removeItem("carts");
-  renderCartItems();
+  // Add event listener for clear all button
+  document.querySelector(".clear-all-btn").addEventListener("click", () => {
+    clearAllCartItems();
+  });
+
+  // Add event listener for apply promo button
+  document.querySelector(".apply-promo-btn").addEventListener("click", () => {
+    applyPromoCode();
+  });
 });
 
 const updateCartItemQuantity = (productId, newQuantity) => {
@@ -25,6 +29,7 @@ const updateCartItemQuantity = (productId, newQuantity) => {
     cartItem.quantity = newQuantity;
     localStorage.setItem("carts", JSON.stringify(carts));
     renderCartItems();
+    updateCartItemNum();
   }
 };
 
@@ -33,6 +38,14 @@ const removeFromCart = (productId) => {
   carts = carts.filter((item) => item.product_Id !== productId);
   localStorage.setItem("carts", JSON.stringify(carts));
   renderCartItems();
+  updateCartItemNum();
+};
+
+const clearAllCartItems = () => {
+  localStorage.removeItem("carts");
+  renderCartItems();
+  updateCartItemNum();
+  resetTotals();
 };
 
 const renderCartItems = () => {
@@ -100,39 +113,65 @@ const renderCartItems = () => {
   }
 
   document.querySelector(".subtotal-amount").textContent = subtotal.toFixed(2);
+  updateCartItemNum();
+  updateTotalAmount(subtotal);
 };
 
-document.querySelector(".apply-promo-btn").addEventListener("click", () => {
-  applyPromoCode();
-});
+const updateCartItemNum = () => {
+  const cartItemNum = document.querySelector(".cart-item-num");
+  if (cartItemNum) {
+    const carts = JSON.parse(localStorage.getItem("carts")) || [];
+    const totalQuantity = carts.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    cartItemNum.textContent = totalQuantity;
+
+    if (totalQuantity > 0) {
+      cartItemNum.classList.remove("hidden");
+    } else {
+      cartItemNum.classList.add("hidden");
+    }
+  }
+};
 
 const applyPromoCode = () => {
   const promoCode = document.getElementById("promo-code").value.trim();
-  console.log(promoCode);
+  const subtotal = parseFloat(
+    document.querySelector(".subtotal-amount").textContent
+  );
+  let discount = 0;
 
   if (promoCode === "ostad10") {
-    const subtotal = parseFloat(
-      document.querySelector(".subtotal-amount").textContent
-    );
-    const discount = subtotal * 0.1;
-    const newTotal = subtotal - discount;
-    document.querySelector(".discount-amount").textContent =
-      discount.toFixed(2);
-    document.querySelector(".total-amount").textContent = newTotal.toFixed(2);
+    discount = subtotal * 0.1;
+  } else if (promoCode === "ostad5") {
+    discount = subtotal * 0.05;
+  } else {
+    const promoErrorMessage = document.querySelector(".promo-error-message");
+    if (promoErrorMessage) {
+      promoErrorMessage.style.display = "block";
+    }
+    return;
   }
-  else if(promoCode === "ostad5"){
-    const subtotal = parseFloat(
-      document.querySelector(".subtotal-amount").textContent
-    );
-    const discount = subtotal * 0.05;
-    const newTotal = subtotal - discount;
-    document.querySelector(".discount-amount").textContent =
-      discount.toFixed(2);
-    document.querySelector(".total-amount").textContent = newTotal.toFixed(20);
-    document.querySelector(".total-amount").textContent = newTotal.toFixed(2);
 
+  const promoErrorMessage = document.querySelector(".promo-error-message");
+  if (promoErrorMessage) {
+    promoErrorMessage.style.display = "none";
   }
-  else {
-    alert("Invalid promo code.");
-  }
+  document.querySelector(".discount-amount").textContent = discount.toFixed(2);
+  updateTotalAmount(subtotal, discount);
+
+
+};
+
+const updateTotalAmount = (subtotal, discount = 0) => {
+  const totalAmount = subtotal - discount;
+  document.querySelector(".total-amount").textContent = totalAmount.toFixed(2);
+};
+
+const resetTotals = () => {
+  document.querySelector(".subtotal-amount").textContent = "0.00";
+  document.querySelector(".discount-amount").textContent = "0.00";
+  document.querySelector(".total-amount").textContent = "0.00";
+  document.getElementById("promo-code").value = "";
 };
