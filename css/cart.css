@@ -58,6 +58,14 @@
     justify-content: space-between;
 }
 
+.clear-all-btn{
+    padding: 10px 20px;
+    background-color: red;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
 .checkout-btn{
     padding: 10px 20px;
     background-color: #3498db;
