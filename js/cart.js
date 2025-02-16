@@ -142,26 +142,31 @@ const applyPromoCode = () => {
   );
   let discount = 0;
 
+  const promoErrorMessage = document.querySelector(".promo-error-message");
+  const promoSuccessMessage = document.querySelector(".promo-success-message");
+
   if (promoCode === "ostad10") {
     discount = subtotal * 0.1;
   } else if (promoCode === "ostad5") {
     discount = subtotal * 0.05;
   } else {
-    const promoErrorMessage = document.querySelector(".promo-error-message");
     if (promoErrorMessage) {
       promoErrorMessage.style.display = "block";
+    }
+    if (promoSuccessMessage) {
+      promoSuccessMessage.style.display = "none";
     }
     return;
   }
 
-  const promoErrorMessage = document.querySelector(".promo-error-message");
   if (promoErrorMessage) {
     promoErrorMessage.style.display = "none";
   }
+  if (promoSuccessMessage) {
+    promoSuccessMessage.style.display = "block";
+  }
   document.querySelector(".discount-amount").textContent = discount.toFixed(2);
   updateTotalAmount(subtotal, discount);
-
-
 };
 
 const updateTotalAmount = (subtotal, discount = 0) => {
